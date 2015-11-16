@@ -37,18 +37,20 @@ const _retrieval = (mapping, solar, pre=false) => {
   const first = {year: solar.year, month: null, date: null};
 
   let month = mapping.length-1;
-  const lunar = {year: pre ? solar.year-1 : solar.year,month: month,date: null};
+  const lunar = {year: pre ? solar.year-1 : solar.year, month: month, date: null};
 
   do {
 
     first.month = Number(mapping[month].substring(0, 2));
     first.date = Number(mapping[month].substring(2, 4));
-    if (first.month < solar.month || (first.month == solar.month && solar.date >= first.date)) {
-      break;
-    }
 
     if (pre && first.month > 12) {
       first.month = first.month % 12;
+    } else if (pre && first.month <= 12) {
+      first.year--;
+    }
+
+    if (first.year < solar.year || first.month < solar.month || (first.month == solar.month && solar.date >= first.date)) {
       break;
     }
 
@@ -57,11 +59,16 @@ const _retrieval = (mapping, solar, pre=false) => {
 
   if (month <= 0) { return null; }
 
-  const fDate = new Date(solar.year, first.month - 1, first.date);
+  const fDate = new Date(first.year, first.month - 1, first.date);
   const sDate = new Date(solar.year, solar.month - 1, solar.date);
   lunar.date = Math.ceil((sDate.getTime() - fDate.getTime()) / (1000 * 60 * 60 * 24) + 1);
 
-  return {solar: solar, first: first, lunar: lunar, leap: mapping[0]};
+  const leap = mapping[0];
+  if (leap != 0 && leap < lunar.month) {
+    lunar.month--;
+  }
+
+  return {solar: solar, first: first, lunar: lunar, leap: leap};
 
 };
 

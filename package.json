@@ -4,7 +4,7 @@
   "description": "lunar",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "files": [
     "lib",
@@ -20,6 +20,7 @@
     "babel-preset-stage-0": "^6.1.18",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
-    "gulp-watch": "^4.3.5"
+    "gulp-watch": "^4.3.5",
+    "mocha": "^2.3.4"
   }
 }
