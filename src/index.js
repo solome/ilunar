@@ -5,21 +5,6 @@ const START_YEAR = 1900;
 const END_YEAR = 2100;
 
 
-class Lunar {
-  constructor(date) {
-    this.solar = date || new Date();
-    const obj = solar2Lunar(date);
-    if (null === obj) {
-      throw new Error('unknown error.');
-    }
-    this.lunar = obj.lunar;
-  }
-
-  static solar2Lunar = _solar2Lunar;
-  static lunar2Solar = _lunar2Solar;
-}
-
-
 const _lunar2Solar = (lunar, leap=false) => {
   if (lunar.year <= START_YEAR || lunar.year >= END_YEAR) {
     throw new Error('Invalid date: (1900, 2100) ' + date.toString());
@@ -81,7 +66,6 @@ const _retrieval = (mapping, solar, pre=false) => {
 };
 
 
-// 根据阳历日期获取对应的阴历日期
 const _solar2Lunar = date => {
   const sYear = date.getFullYear();
   if (sYear <= START_YEAR || sYear >= END_YEAR) {
@@ -106,23 +90,29 @@ const _getDateObj = date => {
 };
 
 
-const main = () => {
-  console.log(_solar2Lunar(new Date('2015-07-12')));
-  console.log(_solar2Lunar(new Date('2015-11-13')));
-  console.log(_solar2Lunar(new Date('2015-02-11')));
-  console.log(_solar2Lunar(new Date('2012-07-12')));
-  console.log(_solar2Lunar(new Date('2015-07-12')));
-  console.log(_solar2Lunar(new Date('2016-01-10')));
+class Lunar {
+  constructor(date) {
+    this.solar = date || new Date();
+    const obj = _solar2Lunar(this.solar);
+    if (null === obj) {
+      throw new Error('unknown error.');
+    }
+    this.lunar = obj.lunar;
+  }
 
+  getYear() {
+    return this.lunar.year;
+  };
+  getMonth() {
+    return this.lunar.month;
+  };
+  getDate() {
+    return this.lunar.date;
+  };
 
-  console.log(_lunar2Solar({year: 2015, month: 2, date: 28}));
-  console.log(_lunar2Solar({year: 2016, month: 2, date: 28}));
-  console.log(_lunar2Solar({year: 2015, month: 4, date: 28}));
-  console.log(_lunar2Solar({year: 2015, month: 10, date: 28}));
-
+  static solar2Lunar = _solar2Lunar;
+  static lunar2Solar = _lunar2Solar;
 }
-
-main();
 
 
 export default Lunar;
