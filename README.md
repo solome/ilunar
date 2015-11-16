@@ -13,7 +13,7 @@ nom install --save ilunar
 ```
 
 
-### Useage
+### Usage
 
 ```js
 
